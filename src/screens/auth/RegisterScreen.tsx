@@ -30,6 +30,7 @@ const RegisterScreen: React.FC = () => {
     phone: '',
     password: '',
     confirmPassword: '',
+    referralCode: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -160,6 +161,12 @@ const RegisterScreen: React.FC = () => {
       color: theme.colors.accent,
       fontFamily: theme.typography.fontFamily.semiBold,
       fontWeight: '600',
+    },
+    inputHint: {
+      fontSize: theme.typography.fontSize.xs,
+      fontFamily: theme.typography.fontFamily.regular,
+      color: theme.colors.textMuted,
+      marginTop: theme.spacing.xs,
     },
   });
 
@@ -385,6 +392,23 @@ const RegisterScreen: React.FC = () => {
                 />
               </TouchableOpacity>
             </View>
+          </View>
+
+          {/* Referral Code Field */}
+          <View style={styles.inputGroup}>
+            <Text style={styles.inputLabel}>Referral Code (Optional)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter referral code"
+              placeholderTextColor={theme.colors.textMuted}
+              value={formData.referralCode}
+              onChangeText={(text) => setFormData(prev => ({ ...prev, referralCode: text.toUpperCase() }))}
+              autoCapitalize="characters"
+              maxLength={10}
+            />
+            <Text style={styles.inputHint}>
+              Have a referral code? Enter it to earn bonus points!
+            </Text>
           </View>
 
           <TouchableOpacity

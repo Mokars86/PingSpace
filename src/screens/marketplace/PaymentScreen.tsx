@@ -11,6 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useCart } from '../../contexts/CartContext';
+import { usePoints } from '../../contexts/PointsContext';
 import { PaymentMethod } from '../../types';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -18,6 +19,7 @@ import { Input } from '../../components/ui/Input';
 const PaymentScreen: React.FC = () => {
   const { theme } = useTheme();
   const { cartTotal, cartCount, clearCart } = useCart();
+  const { earnPoints, pointsSettings } = usePoints();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -78,22 +80,57 @@ const PaymentScreen: React.FC = () => {
     setIsProcessing(true);
 
     // Simulate payment processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      
-      Alert.alert(
-        'Payment Successful!',
-        `Your order has been placed successfully.\nTotal: $${(cartTotal + 9.99 + cartTotal * 0.08).toFixed(2)}`,
-        [
+    setTimeout(async () => {
+      try {
+        // Calculate points to award (1 point per dollar spent on the cart total)
+        const pointsToAward = Math.floor(cartTotal * pointsSettings.pointsPerDollarSpent);
+
+        // Award points for the purchase
+        await earnPoints(
+          pointsToAward,
+          'purchase',
+          `Purchase reward: ${pointsToAward} points for $${cartTotal.toFixed(2)} purchase`,
           {
-            text: 'View Order',
-            onPress: () => {
-              clearCart();
-              console.log('Navigate to order details');
+            purchaseAmount: cartTotal,
+            orderTotal: cartTotal + 9.99 + cartTotal * 0.08,
+            referenceId: `ORDER_${Date.now()}`
+          }
+        );
+
+        setIsProcessing(false);
+
+        Alert.alert(
+          'Payment Successful! 🎉',
+          `Your order has been placed successfully.\nTotal: $${(cartTotal + 9.99 + cartTotal * 0.08).toFixed(2)}\n\n🎁 You earned ${pointsToAward} points for this purchase!`,
+          [
+            {
+              text: 'View Order',
+              onPress: () => {
+                clearCart();
+                console.log('Navigate to order details');
+              },
             },
-          },
-        ]
-      );
+          ]
+        );
+      } catch (error) {
+        setIsProcessing(false);
+        console.error('Error awarding points:', error);
+
+        // Still show success for payment, but mention points issue
+        Alert.alert(
+          'Payment Successful!',
+          `Your order has been placed successfully.\nTotal: $${(cartTotal + 9.99 + cartTotal * 0.08).toFixed(2)}\n\nNote: There was an issue awarding points, but your order is confirmed.`,
+          [
+            {
+              text: 'View Order',
+              onPress: () => {
+                clearCart();
+                console.log('Navigate to order details');
+              },
+            },
+          ]
+        );
+      }
     }, 3000);
   };
 

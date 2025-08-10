@@ -1094,3 +1094,111 @@ export interface ReferralStats {
     successRate: number;
   }[];
 }
+
+// Points and Rewards System Types
+export interface UserPoints {
+  id: string;
+  userId: string;
+  totalPoints: number;
+  availablePoints: number;
+  usedPoints: number;
+  lifetimeEarned: number;
+  currentTier: PointsTier;
+  nextTierPoints: number;
+  expiringPoints: {
+    amount: number;
+    expiryDate: Date;
+  }[];
+  lastUpdated: Date;
+}
+
+export interface PointsTransaction {
+  id: string;
+  userId: string;
+  type: 'earned' | 'redeemed' | 'expired' | 'bonus';
+  amount: number;
+  source: 'referral' | 'purchase' | 'signup' | 'daily_login' | 'social_share' | 'review' | 'redemption' | 'admin_bonus';
+  description: string;
+  referenceId?: string; // referral ID, purchase ID, etc.
+  metadata?: {
+    referralCode?: string;
+    purchaseAmount?: number;
+    productId?: string;
+    tierBonus?: number;
+  };
+  status: 'pending' | 'completed' | 'failed' | 'expired';
+  expiryDate?: Date;
+  createdAt: Date;
+  processedAt?: Date;
+}
+
+export interface PointsTier {
+  id: string;
+  name: string;
+  minPoints: number;
+  maxPoints?: number;
+  multiplier: number; // Points earning multiplier
+  benefits: string[];
+  color: string;
+  icon: string;
+}
+
+export interface RewardItem {
+  id: string;
+  name: string;
+  description: string;
+  pointsCost: number;
+  category: 'discount' | 'product' | 'service' | 'digital' | 'experience';
+  type: 'percentage_discount' | 'fixed_discount' | 'free_product' | 'free_shipping' | 'premium_feature' | 'gift_card';
+  value: number; // discount amount or product value
+  currency?: string;
+  imageUrl?: string;
+  isActive: boolean;
+  isLimited: boolean;
+  totalQuantity?: number;
+  remainingQuantity?: number;
+  validityDays: number;
+  minimumPurchase?: number;
+  applicableProducts?: string[]; // product IDs
+  terms?: string[];
+  createdAt: Date;
+  expiresAt?: Date;
+}
+
+export interface PointsRedemption {
+  id: string;
+  userId: string;
+  rewardId: string;
+  rewardName: string;
+  pointsUsed: number;
+  status: 'pending' | 'approved' | 'redeemed' | 'expired' | 'cancelled';
+  redemptionCode?: string;
+  qrCode?: string;
+  expiryDate: Date;
+  redeemedAt?: Date;
+  usedAt?: Date;
+  metadata?: {
+    orderId?: string;
+    discountAmount?: number;
+    originalPrice?: number;
+    finalPrice?: number;
+  };
+  createdAt: Date;
+}
+
+export interface PointsSettings {
+  isEnabled: boolean;
+  pointsPerDollarSpent: number;
+  referralPoints: {
+    referrer: number;
+    referee: number;
+  };
+  signupBonus: number;
+  dailyLoginPoints: number;
+  socialSharePoints: number;
+  reviewPoints: number;
+  pointsExpiryDays: number;
+  minimumRedemption: number;
+  maxPointsPerTransaction?: number;
+  tierBonusEnabled: boolean;
+}

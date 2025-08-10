@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useCart } from '../../contexts/CartContext';
 import { Product, ProductCategory } from '../../types';
+import PointsDisplay from '../../components/points/PointsDisplay';
 import { RootStackParamList } from '../../navigation/MainNavigator';
 
 const MarketplaceScreen: React.FC = () => {
@@ -562,6 +563,9 @@ const MarketplaceScreen: React.FC = () => {
             placeholderTextColor={theme.colors.textMuted}
           />
         </View>
+
+        {/* Points Display */}
+        <PointsDisplay variant="compact" />
 
         <View style={styles.categoriesContainer}>
           <FlatList
