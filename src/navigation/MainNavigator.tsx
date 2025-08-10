@@ -30,6 +30,7 @@ import MobileMoneyScreen from '../screens/payment/MobileMoneyScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import PrivacySecurityScreen from '../screens/PrivacySecurityScreen';
 import DeleteAccountScreen from '../screens/DeleteAccountScreen';
+import PointsRewardsScreen from '../screens/PointsRewardsScreen';
 
 export type RootStackParamList = {
   Auth: undefined;
@@ -63,6 +64,7 @@ export type RootStackParamList = {
   CreateGroup: undefined;
   NewBroadcast: undefined;
   EditProfile: undefined;
+  PointsRewards: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -281,6 +283,13 @@ const MainNavigator: React.FC = () => {
           <Stack.Screen
             name="DeleteAccount"
             component={DeleteAccountScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="PointsRewards"
+            component={PointsRewardsScreen}
             options={{
               headerShown: false,
             }}

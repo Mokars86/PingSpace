@@ -18,6 +18,7 @@ import { CartProvider } from './src/contexts/CartContext';
 import { StatusProvider } from './src/contexts/StatusContext';
 import { WalletProvider } from './src/contexts/WalletContext';
 import { DonationProvider } from './src/contexts/DonationContext';
+import { PointsProvider } from './src/contexts/PointsContext';
 import MainNavigator from './src/navigation/MainNavigator';
 import SplashScreen from './src/screens/SplashScreen';
 
@@ -61,10 +62,12 @@ export default function App() {
               <StatusProvider>
                 <WalletProvider>
                   <DonationProvider>
-                    <NavigationContainer>
-                      <StatusBar style="dark" backgroundColor="#FFFFFF" />
-                      <MainNavigator />
-                    </NavigationContainer>
+                    <PointsProvider>
+                      <NavigationContainer>
+                        <StatusBar style="dark" backgroundColor="#FFFFFF" />
+                        <MainNavigator />
+                      </NavigationContainer>
+                    </PointsProvider>
                   </DonationProvider>
                 </WalletProvider>
               </StatusProvider>

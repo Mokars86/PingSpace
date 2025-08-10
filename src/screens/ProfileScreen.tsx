@@ -16,6 +16,7 @@ import { useTheme, MoodTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { RootStackParamList } from '../navigation/MainNavigator';
 import DeviceManager, { LinkedDevice } from '../components/profile/DeviceManager';
+import PointsDisplay from '../components/points/PointsDisplay';
 
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -399,6 +400,9 @@ const ProfileScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
+      {/* Points Display */}
+      <PointsDisplay variant="full" showTier={true} />
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Theme Selector */}
         <View style={styles.section}>
@@ -614,6 +618,29 @@ const ProfileScreen: React.FC = () => {
               name="chevron-forward"
               size={16}
               style={[styles.settingAction, styles.chevron]}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.navigate('PointsRewards')}
+          >
+            <Ionicons
+              name="gift"
+              size={20}
+              color={theme.colors.accent}
+              style={styles.settingIcon}
+            />
+            <View style={styles.settingContent}>
+              <Text style={styles.settingLabel}>Points & Rewards</Text>
+              <Text style={styles.settingDescription}>
+                Earn points, redeem rewards, and refer friends
+              </Text>
+            </View>
+            <Ionicons
+              name="chevron-forward"
+              size={16}
+              color={theme.colors.textMuted}
             />
           </TouchableOpacity>
 

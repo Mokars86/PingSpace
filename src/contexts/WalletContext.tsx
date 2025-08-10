@@ -527,7 +527,10 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       await saveWallet(updatedWallet);
       await saveTransactions(updatedTransactions);
 
+      // Award points for purchase (this will be handled by the component using this context)
+      // Points are awarded based on the original purchase amount (excluding donation fee)
       console.log(`Marketplace purchase: $${amount} + $${donationFee} donation`);
+      console.log(`Points should be awarded: ${Math.floor(amount)} points for $${amount} purchase`);
     } catch (error) {
       console.error('Error processing marketplace purchase:', error);
       throw error;
